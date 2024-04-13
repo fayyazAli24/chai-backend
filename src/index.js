@@ -10,7 +10,6 @@ dotenv.config(
 
 connectDB()
 .then(()=>{
-
     app.on("ERROR", ()=>{
         console.log("error occured while communicating with server in app.on method in index.js");
     })
@@ -18,8 +17,6 @@ connectDB()
     app.listen(process.env.PORT || 8000, ()=>{
         console.log(`server is running ${process.env.PORT}`);
     });
-
-
 })
 .catch((error)=>{
     console.log("MONGO_DB connection failed in index.js",error);

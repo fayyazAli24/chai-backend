@@ -1,3 +1,5 @@
+// a wrapper to handle all the database related methods which accepts a function in the parameter
+
 const asyncHandler = (fun)=>{
     async (res,req,next) =>{
         try{
