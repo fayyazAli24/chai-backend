@@ -56,7 +56,7 @@ const userSchema = new Schema({
 
 // pre is a middleware method which does something before saving the data 
 userSchema.pre("save", async function(next){
-
+    
     // exceypt the password when password field is change othwewise return
     if(!this.isModified("password")) return next();
 
@@ -66,7 +66,6 @@ userSchema.pre("save", async function(next){
 
 // checking if the encrypted password is equal to the actual user password
 userSchema.methods.isPasswordCorrect = async function(password){
-
    return await bcrypt.compare(password,this.password);
 }
 
@@ -88,7 +87,6 @@ userSchema.methods.generateAccessToken = function(){
 }
 
 // generating refresh token by injecting a custom method 
-
 userSchema.methods.generateRefreshToken = function(){
     return jwt.sign(
         // payload
@@ -101,8 +99,4 @@ userSchema.methods.generateRefreshToken = function(){
         }
     )
 }   
-
-
-
-
 export const User = mongoose.model("User",userSchema);

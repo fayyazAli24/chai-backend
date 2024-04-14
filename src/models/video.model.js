@@ -40,6 +40,8 @@ const videoSchema = Schema({
 
 },{timestamps:true});
 
+
+// injecting aggregation plugin to be used in watch history section for complex query
 videoSchema.plugin(mongooseAggregatePaginate);
 
 export const Video = mongoose.model("Video", videoSchema);
