@@ -1,17 +1,12 @@
 // a wrapper to handle all the database related methods which accepts a function in the parameter
 
-const asyncHandler = (fun)=>{
-    async (res,req,next) =>{
-        try{
-            await fun(req,res,next);
+const asyncHandler = (requestHandler)=>{
 
-        }catch(error){
-            res.status(error.code || 500).json({
-                success:false,
-                message:error.message
-            })
-        }
-    }
+   return (req,res,next)=>{
+
+    Promise.resolve(requestHandler(req,res,next)).catch
+    ((err)=>next(err))
+   }
 }
-
 export { asyncHandler };
+

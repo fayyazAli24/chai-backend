@@ -20,5 +20,4 @@ connectDB()
 })
 .catch((error)=>{
     console.log("MONGO_DB connection failed in index.js",error);
-})
-;
+});

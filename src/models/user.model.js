@@ -14,7 +14,7 @@ const userSchema = new Schema({
         lowercase:true
     },
 
-    userName:{
+    email:{
         type:String,
         required:true,
         unique:true,
@@ -28,6 +28,7 @@ const userSchema = new Schema({
         trim:true,
         lowercase:true
     },
+    
     avatar:{
         type:String, // cloudinary service will be used to store the image
         required:true

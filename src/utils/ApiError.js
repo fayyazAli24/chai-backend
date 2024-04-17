@@ -21,8 +21,6 @@ class ApiError extends Error{
             // capturing error is occuring in which context 
             Error.captureStackTrace(this,this.constructor)
         }
-
-
     }
 }
 
