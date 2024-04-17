@@ -19,8 +19,10 @@ const uploadOnCloudinary = async (localFilePath)=>{
             resource_type:"auto"
         });
         console.log("file has been uploaded succesfully in cloudinary utilis file ",response.url);
-        return response;
+        fs.unlinkSync(localFilePath);
 
+        return response;
+        
     }catch(e){
         //delete from the locally saved temporary file 
         console.log("it is in catch block of cloudinary js ");

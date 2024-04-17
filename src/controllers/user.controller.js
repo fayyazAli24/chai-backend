@@ -45,18 +45,23 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   const localAvatarPath = req.files?.avatar[0]?.path;
-  const localCoverImagePath = req.files?.coverImage[0]?.path;
-  console.log("the path of avatar image is ",localAvatarPath);
-  console.log("the path of cover image is ",localCoverImagePath);
+  console.log("the path of cover image is ",localAvatarPath);
+
+  let localCoverImagePath;
+
+  if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0){
+    localCoverImagePath = req.files.coverImage[0].path;
+    console.log(`this ${localCoverImagePath}`);
+    
+  }
 
   if (!localAvatarPath) {
     throw ApiError(400, "Avatar image is required");
   }
 
-
     const avatar =await uploadOnCloudinary(localAvatarPath);
-    console.log("the avatar is ",avatar);
-    const coverImage =await uploadOnCloudinary(localCoverImagePath);
+    const coverImage = await uploadOnCloudinary(localCoverImagePath);
+
 
 
     if(!avatar){
@@ -66,7 +71,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const user = await User.create({
         fullName,
         avatar:avatar.url,
-        coverImage:coverImage.url || "",
+        coverImage: coverImage?.url || "",
         email,
         password,
         userName: userName.toLowerCase()
@@ -83,9 +88,6 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json(
         new ApiResponse(200,createdUser,"user successfully registered")
     );
-
-
-
 });
 
 export { registerUser };
