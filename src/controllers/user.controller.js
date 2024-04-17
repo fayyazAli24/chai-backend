@@ -16,6 +16,8 @@ const registerUser = asyncHandler(async (req, res) => {
   // check for user creation
   // return response
 
+
+  // getting the parameters from the req body 
   const { userName, email, fullName, password } = req.body;
 
   console.log("email : ", email);
@@ -30,12 +32,17 @@ const registerUser = asyncHandler(async (req, res) => {
   //   }
   // }
 
+
+
+
+  // converting them into string
   if([fullName,email,userName,password].some(
       (field) => field?.toString().trim() == ""
   )){
       throw new ApiError(400, is`${field} is required`);
   }
 
+  // checking for existed user if user exists gives error
   const existedUser = await User.findOne({
     $or: [{ userName }, { email }],
   });
@@ -44,11 +51,12 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "user with email or username already exist");
   }
 
+  // checking for avatar local path
   const localAvatarPath = req.files?.avatar[0]?.path;
   console.log("the path of cover image is ",localAvatarPath);
 
+  // checking for cover image local path and adding condidition since it is not required
   let localCoverImagePath;
-
   if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0){
     localCoverImagePath = req.files.coverImage[0].path;
     console.log(`this ${localCoverImagePath}`);
@@ -59,6 +67,8 @@ const registerUser = asyncHandler(async (req, res) => {
     throw ApiError(400, "Avatar image is required");
   }
 
+
+  // uploading on cloudinary
     const avatar =await uploadOnCloudinary(localAvatarPath);
     const coverImage = await uploadOnCloudinary(localCoverImagePath);
 
@@ -68,6 +78,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400,"Avatar image is required");
     }
 
+    // inserting into database
     const user = await User.create({
         fullName,
         avatar:avatar.url,
@@ -77,6 +88,7 @@ const registerUser = asyncHandler(async (req, res) => {
         userName: userName.toLowerCase()
     })
 
+    // removing the password and refresh token and sending it to the response
     const createdUser =await User.findById(user._id).select(
     "-password -refreshToken"
     )
