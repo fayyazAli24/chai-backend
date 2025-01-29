@@ -34,9 +34,6 @@ const registerUser = asyncHandler(async (req, res) => {
   //   }
   // }
 
-
-
-
   // converting them into string
   if([fullName,email,userName,password].some(
       (field) => field?.toString().trim() == ""
@@ -69,7 +66,6 @@ const registerUser = asyncHandler(async (req, res) => {
     throw ApiError(400, "Avatar image is required");
   }
 
-
   // uploading on cloudinary
     const avatar =await uploadOnCloudinary(localAvatarPath);
     const coverImage = await uploadOnCloudinary(localCoverImagePath);
@@ -90,6 +86,7 @@ const registerUser = asyncHandler(async (req, res) => {
         userName: userName.toLowerCase()
     })
 
+    
     // removing the password and refresh token and sending it to the response
     const createdUser =await User.findById(user._id).select(
     "-password -refreshToken"
