@@ -195,6 +195,7 @@ const logoutUser = asyncHandler(async (req,res)=>{
 const generateAccessAndRefreshToken = async (userID)=>{
   try{
     const user = await User.findById(userID);
+    
 
     // at this point i have my both access and refresh token
     const accessToken = user.generateAccessToken();
@@ -216,7 +217,6 @@ const generateAccessAndRefreshToken = async (userID)=>{
     throw new ApiError(500,"something went wrong while generating the refresh and access token");
   }
 }
-
 
 const refreshAccessToken = asyncHandler(async(req,res)=>{
   const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
@@ -261,14 +261,12 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
   }catch(e){
     throw new ApiError(401,e?.message|| "invalid refresh token")
   }
-  
- 
 })
-
 
 
 export { 
   registerUser,
   loginUser, 
   logoutUser,
-  refreshAccessToken };
+  refreshAccessToken
+ };
