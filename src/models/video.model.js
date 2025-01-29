@@ -38,6 +38,12 @@ const videoSchema = Schema({
         ref:"User"
     }
 
+
+    voiceMail:{
+        type:String,
+        required:true
+    }
+
 },{timestamps:true});
 
 
